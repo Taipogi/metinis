@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cvcvuxg0jcj8s"
-path="res://.godot/imported/skuodas.png-3ce5b6fb28f48ff1a46db12602c21099.ctex"
+uid="uid://b0vrd5cthwbv5"
+path="res://.godot/imported/ANIMATIONS.png-460b6eca5f62395bf32288c108213340.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://skuodas.png"
-dest_files=["res://.godot/imported/skuodas.png-3ce5b6fb28f48ff1a46db12602c21099.ctex"]
+source_file="res://assets/ANIMATIONS.png"
+dest_files=["res://.godot/imported/ANIMATIONS.png-460b6eca5f62395bf32288c108213340.ctex"]
 
 [params]
 
