@@ -1,0 +1,22 @@
+# Godot 4+ cache and imported assets
+.godot/
+
+# Godot 3+ import cache (if using Godot 3)
+.import/
+
+# Exported binaries
+export_presets.cfg
+builds/
+*.apk
+*.aab
+*.exe
+*.zip
+*.tar.gz
+*.dmg
+
+# OS and Editor specific files
+.DS_Store
+Thumbs.db
+*.tmp
+.idea/
+.vscode/

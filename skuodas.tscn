@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cw0f80gfftdmq"]
+
+[ext_resource type="Texture2D" uid="uid://cvcvuxg0jcj8s" path="res://skuodas.png" id="1_f3t7k"]
+
+[node name="Skuodas" type="Sprite2D" unique_id=331729188]
+position = Vector2(2475.25, -886.75)
+scale = Vector2(2.5881426, 3.727027)
+texture = ExtResource("1_f3t7k")
