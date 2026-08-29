@@ -1,10 +1,18 @@
 [gd_scene format=3 uid="uid://cb2ib7msc85br"]
 
 [ext_resource type="PackedScene" uid="uid://d3vmuyfhay6cn" path="res://scenes/player.tscn" id="1_elqb8"]
+[ext_resource type="PackedScene" uid="uid://bjlyc0dfidj7k" path="res://scenes/ROOMS/room_template.tscn" id="2_rvslj"]
+[ext_resource type="Script" uid="uid://bmkslbq4eut24" path="res://scripts/room_generation.gd" id="3_0bbpv"]
 
 [node name="game" type="Node2D" unique_id=1653389691]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1420908186]
-zoom = Vector2(3, 3)
+zoom = Vector2(0.2, 0.2)
 
 [node name="player" parent="." unique_id=2138913898 instance=ExtResource("1_elqb8")]
+
+[node name="ROOM_TEMPLATE" parent="." unique_id=893755609 instance=ExtResource("2_rvslj")]
+
+[node name="RoomGeneration" type="Node2D" parent="." unique_id=1115696456]
+position = Vector2(3, 3)
+script = ExtResource("3_0bbpv")
