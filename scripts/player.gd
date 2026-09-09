@@ -16,6 +16,8 @@ func _physics_process(delta):
 	else:
 		idle_anim(lastdir)
 		print(direction)
+
+		
 		
 func walk_anim(direction):
 	if direction.x > 0:

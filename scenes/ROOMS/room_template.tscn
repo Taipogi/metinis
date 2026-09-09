@@ -152,22 +152,18 @@ polygon = PackedVector2Array(96, 72, 24, 72, 24, 138, 140, 138, 140, 0, 96, 0)
 [node name="DOOR" type="Node2D" parent="ENTRANCE_NORTH" unique_id=1849453791]
 
 [node name="TUNNEL" type="TileMapLayer" parent="ENTRANCE_NORTH/DOOR" unique_id=2059645035]
-visible = false
 tile_map_data = PackedByteArray("AAD///v/AQABAAMAAAABAPv/AQACAAMAAAABAPr/AQACAAMAAAD///r/AQABAAMAAAA=")
 tile_set = SubResource("TileSet_wg30l")
 
 [node name="DOOR_SHUT" type="StaticBody2D" parent="ENTRANCE_NORTH/DOOR" unique_id=1358480636]
-visible = false
 
 [node name="DOORSPRITE" type="Sprite2D" parent="ENTRANCE_NORTH/DOOR/DOOR_SHUT" unique_id=1742295314]
-visible = false
 position = Vector2(12, -84)
 texture = ExtResource("1_gdsuq")
 region_enabled = true
 region_rect = Rect2(29, 58, 24, 24)
 
 [node name="DOORCOLLISION" type="CollisionShape2D" parent="ENTRANCE_NORTH/DOOR/DOOR_SHUT" unique_id=1108497380]
-visible = false
 position = Vector2(12, -84)
 shape = SubResource("RectangleShape2D_54q3l")
 
