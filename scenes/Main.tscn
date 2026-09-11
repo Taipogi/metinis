@@ -5,13 +5,11 @@
 
 [node name="game" type="Node2D" unique_id=1653389691]
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1420908186]
-zoom = Vector2(1.865, 1.865)
-
 [node name="player" parent="." unique_id=2138913898 instance=ExtResource("1_elqb8")]
+
+[node name="Camera2D" type="Camera2D" parent="player" unique_id=1420908186]
+zoom = Vector2(3, 3)
 
 [node name="RoomGeneration" type="Node2D" parent="." unique_id=1115696456]
 position = Vector2(3, 3)
 script = ExtResource("3_0bbpv")
-map_size = null
-rooms_to_generate = null
