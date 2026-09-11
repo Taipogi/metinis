@@ -135,16 +135,24 @@ tile_map_data = PackedByteArray("AAAEAP7/AAACAAMAAAAEAP3/AAACAAMAAAAEAPz/AAACAAM
 tile_set = SubResource("TileSet_54q3l")
 
 [node name="WALLCOLLIDER2" type="CollisionPolygon2D" parent="." unique_id=1484971493]
+position = Vector2(0.313859, -0.30259705)
+scale = Vector2(1.0298913, 1.0280173)
 polygon = PackedVector2Array(96, -72, 24, -72, 24, -140, 139, -140, 139, -24, 96, -24)
 
 [node name="WALLCOLLIDER" type="CollisionPolygon2D" parent="." unique_id=1448203615]
+position = Vector2(-2.5018737, -0.35266504)
 rotation = -0.00063886127
+scale = Vector2(1.0765029, 1.0337392)
 polygon = PackedVector2Array(-72, -72, 0, -72, 0, -139, -109, -139, -109, -24, -72, -24)
 
 [node name="WALLCOLLIDER3" type="CollisionPolygon2D" parent="." unique_id=364301728]
+position = Vector2(-2.737503, 0)
+scale = Vector2(1.0844908, 1)
 polygon = PackedVector2Array(-72, 72, -72, 0, -108, 0, -108, 139, 0, 139, 0, 72)
 
 [node name="WALLCOLLIDER4" type="CollisionPolygon2D" parent="." unique_id=1907387084]
+position = Vector2(0.30258656, -3.8146973e-06)
+scale = Vector2(1.0280173, 0.99999994)
 polygon = PackedVector2Array(96, 72, 24, 72, 24, 138, 140, 138, 140, 0, 96, 0)
 
 [node name="ENTRANCE_NORTH" type="Node2D" parent="." unique_id=683449469]
@@ -152,7 +160,7 @@ polygon = PackedVector2Array(96, 72, 24, 72, 24, 138, 140, 138, 140, 0, 96, 0)
 [node name="DOOR" type="Node2D" parent="ENTRANCE_NORTH" unique_id=1849453791]
 
 [node name="TUNNEL" type="TileMapLayer" parent="ENTRANCE_NORTH/DOOR" unique_id=2059645035]
-tile_map_data = PackedByteArray("AAD///v/AQABAAMAAAABAPv/AQACAAMAAAABAPr/AQACAAMAAAD///r/AQABAAMAAAA=")
+tile_map_data = PackedByteArray("AAABAPv/AQACAAMAAAABAPr/AQACAAMAAAD///v/AQABAAMAAAD///r/AQABAAMAAAA=")
 tile_set = SubResource("TileSet_wg30l")
 
 [node name="DOOR_SHUT" type="StaticBody2D" parent="ENTRANCE_NORTH/DOOR" unique_id=1358480636]
@@ -240,7 +248,7 @@ rotation = 3.1415927
 [node name="DOOR" type="Node2D" parent="ENTRANCE_SOUTH" unique_id=295580741]
 
 [node name="TUNNEL" type="TileMapLayer" parent="ENTRANCE_SOUTH/DOOR" unique_id=1416281686]
-tile_map_data = PackedByteArray("AAD///z/AQABAAMAAAD///v/AQABAAMAAAABAPz/AQACAAMAAAABAPv/AQACAAMAAAA=")
+tile_map_data = PackedByteArray("AAD///z/AQACAAMAADD///v/AQACAAMAADABAPz/AQABAAMAADABAPv/AQABAAMAADA=")
 tile_set = SubResource("TileSet_wg30l")
 
 [node name="DOOR_SHUT" type="StaticBody2D" parent="ENTRANCE_SOUTH/DOOR" unique_id=1252191886]
@@ -284,7 +292,7 @@ rotation = 4.712389
 [node name="DOOR" type="Node2D" parent="ENTRANCE_WEST" unique_id=35801537]
 
 [node name="TUNNEL" type="TileMapLayer" parent="ENTRANCE_WEST/DOOR" unique_id=649757811]
-tile_map_data = PackedByteArray("AAD///z/AQABAAMAAAD///v/AQABAAMAAAABAPz/AQACAAMAAAABAPv/AQACAAMAAAA=")
+tile_map_data = PackedByteArray("AAABAPz/AQABAAMAADABAPv/AQABAAMAADD///z/AQACAAMAADD///v/AQACAAMAADA=")
 tile_set = SubResource("TileSet_wg30l")
 
 [node name="DOOR_SHUT" type="StaticBody2D" parent="ENTRANCE_WEST/DOOR" unique_id=1463735102]
