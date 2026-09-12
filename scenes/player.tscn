@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://b0vrd5cthwbv5" path="res://assets/ANIMATIONS.png" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://c0tmrtlndfj68" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Script" uid="uid://bcymfsv807y84" path="res://scripts/health.gd" id="3_qhqgy"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g2els"]
 atlas = ExtResource("1_3vyb7")
@@ -246,6 +247,7 @@ animations = [{
 radius = 7.0
 
 [node name="player" type="CharacterBody2D" unique_id=2138913898]
+z_index = 10
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1149581397]
@@ -257,3 +259,14 @@ frame_progress = 0.78704304
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=136457609]
 position = Vector2(0, -8)
 shape = SubResource("CircleShape2D_toviy")
+
+[node name="Health" type="Node" parent="." unique_id=1680912762]
+script = ExtResource("3_qhqgy")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=2137063261]
+texture_filter = 2
+offset_left = 114.0
+offset_top = 81.0
+offset_right = 190.0
+offset_bottom = 108.0
+value = 100.0
