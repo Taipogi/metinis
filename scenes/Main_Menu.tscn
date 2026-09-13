@@ -1,0 +1,90 @@
+[gd_scene format=3 uid="uid://cdwbbkykabt46"]
+
+[ext_resource type="Script" uid="uid://chtqx5lgjj8ls" path="res://main_menu.gd" id="1_jfien"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54q3l"]
+bg_color = Color(0.6012872, 0.5840393, 0.63187015, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wg30l"]
+bg_color = Color(0.45145595, 0.3846768, 0.50910425, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_size = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y2rfe"]
+bg_color = Color(0.50271565, 0.45745748, 0.54124194, 1)
+corner_radius_top_left = 30
+corner_radius_top_right = 30
+corner_radius_bottom_right = 30
+corner_radius_bottom_left = 30
+shadow_size = 5
+
+[node name="MainMenu" type="Control" unique_id=1415210548]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 6
+script = ExtResource("1_jfien")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1921274581]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -313.5
+offset_top = -164.5
+offset_right = 313.5
+offset_bottom = 164.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button" type="Button" parent="VBoxContainer" unique_id=746341690]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 7
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
+theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
+text = "START GAME"
+
+[node name="Button2" type="Button" parent="VBoxContainer" unique_id=1328987217]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 7
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
+theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
+text = "OPTIONS"
+
+[node name="Button3" type="Button" parent="VBoxContainer" unique_id=311850641]
+layout_mode = 2
+size_flags_horizontal = 5
+size_flags_vertical = 7
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
+theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
+text = "EXIT"
+
+[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_settings_2_pressed"]
+[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_exit_3_pressed"]
