@@ -14,6 +14,11 @@ func _ready():
 	
 	health_bar.max_value = health.max_health
 	health_bar.value = health.current_health
+	
+func take_damage(amount):
+	health.take_damage(amount)
+
+
 
 
 func _physics_process(delta):

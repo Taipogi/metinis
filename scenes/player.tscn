@@ -243,12 +243,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_toviy"]
-radius = 7.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_md0e3"]
+size = Vector2(14, 20)
 
-[node name="player" type="CharacterBody2D" unique_id=2138913898]
+[node name="player" type="CharacterBody2D" unique_id=2138913898 groups=["player"]]
 z_index = 10
+collision_mask = 3
+motion_mode = 1
 script = ExtResource("1_g2els")
+metadata/player = false
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1149581397]
 position = Vector2(4, -12)
@@ -257,8 +260,8 @@ animation = &"walk_right"
 frame_progress = 0.78704304
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=136457609]
-position = Vector2(0, -8)
-shape = SubResource("CircleShape2D_toviy")
+position = Vector2(0, -10)
+shape = SubResource("RectangleShape2D_md0e3")
 
 [node name="Health" type="Node" parent="." unique_id=1680912762]
 script = ExtResource("3_qhqgy")
