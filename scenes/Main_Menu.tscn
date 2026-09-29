@@ -2,89 +2,120 @@
 
 [ext_resource type="Script" uid="uid://chtqx5lgjj8ls" path="res://main_menu.gd" id="1_jfien"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_54q3l"]
-bg_color = Color(0.6012872, 0.5840393, 0.63187015, 1)
+[sub_resource type="SystemFont" id="SystemFont_f52fo"]
+font_names = PackedStringArray("Comic Sans MS")
+
+[sub_resource type="LabelSettings" id="LabelSettings_5ujtb"]
+font = SubResource("SystemFont_f52fo")
+font_size = 128
+font_color = Color(1, 0.40392157, 1, 1)
+shadow_size = 17
+shadow_color = Color(0, 0, 0, 0.56078434)
+shadow_offset = Vector2(3.305, 4.495)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqpn8"]
+bg_color = Color(0.5019608, 0.45882353, 0.5411765, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wg30l"]
-bg_color = Color(0.45145595, 0.3846768, 0.50910425, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mulh1"]
+bg_color = Color(0.6, 0.58431375, 0.6313726, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_y2rfe"]
-bg_color = Color(0.50271565, 0.45745748, 0.54124194, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldo7a"]
+bg_color = Color(0.4509804, 0.38431373, 0.50980395, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
 corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 shadow_size = 5
+
+[sub_resource type="Theme" id="Theme_f52fo"]
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/font_sizes/font_size = 60
+Button/styles/hover = SubResource("StyleBoxFlat_gqpn8")
+Button/styles/normal = SubResource("StyleBoxFlat_mulh1")
+Button/styles/pressed = SubResource("StyleBoxFlat_ldo7a")
 
 [node name="MainMenu" type="Control" unique_id=1415210548]
 layout_mode = 3
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 6
+size_flags_horizontal = 4
 script = ExtResource("1_jfien")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1921274581]
+[node name="Background" type="TextureRect" parent="." unique_id=1501222838]
 layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -313.5
-offset_top = -164.5
-offset_right = 313.5
-offset_bottom = 164.5
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+expand_mode = 1
+stretch_mode = 6
 
-[node name="Button" type="Button" parent="VBoxContainer" unique_id=746341690]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1919370018]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 12.0
+offset_right = 20.0
+offset_bottom = 12.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 80
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 80
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1921274581]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 60
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1762513422]
+layout_mode = 2
+text = "SIGMA GAME"
+label_settings = SubResource("LabelSettings_5ujtb")
+horizontal_alignment = 1
+
+[node name="ButtonList" type="VBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=1221310668]
+custom_minimum_size = Vector2(350, 200)
+layout_mode = 2
+theme = SubResource("Theme_f52fo")
+theme_override_constants/separation = 16
+
+[node name="Button1" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=746341690]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
-theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
 text = "START GAME"
 
-[node name="Button2" type="Button" parent="VBoxContainer" unique_id=1328987217]
+[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=1328987217]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
-theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
 text = "OPTIONS"
 
-[node name="Button3" type="Button" parent="VBoxContainer" unique_id=311850641]
+[node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=311850641]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 30
-theme_override_styles/normal = SubResource("StyleBoxFlat_54q3l")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_wg30l")
-theme_override_styles/hover = SubResource("StyleBoxFlat_y2rfe")
 text = "EXIT"
 
-[connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_start_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button2" to="." method="_on_settings_2_pressed"]
-[connection signal="pressed" from="VBoxContainer/Button3" to="." method="_on_exit_3_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button1" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button2" to="." method="_on_settings_2_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button3" to="." method="_on_exit_3_pressed"]
