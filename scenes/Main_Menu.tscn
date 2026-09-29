@@ -2,6 +2,9 @@
 
 [ext_resource type="Script" uid="uid://chtqx5lgjj8ls" path="res://main_menu.gd" id="1_jfien"]
 
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jfien"]
+load_path = "res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"
+
 [sub_resource type="SystemFont" id="SystemFont_f52fo"]
 font_names = PackedStringArray("Comic Sans MS")
 
@@ -61,8 +64,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = SubResource("CompressedTexture2D_jfien")
 expand_mode = 1
-stretch_mode = 6
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1919370018]
 layout_mode = 1
