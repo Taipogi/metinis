@@ -1,12 +1,14 @@
 [gd_scene format=3 uid="uid://cdwbbkykabt46"]
 
 [ext_resource type="Script" uid="uid://chtqx5lgjj8ls" path="res://main_menu.gd" id="1_jfien"]
+[ext_resource type="Script" uid="uid://dd2jv1esft0it" path="res://scripts/background.gd" id="2_y2rfe"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jfien"]
 load_path = "res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"
 
 [sub_resource type="SystemFont" id="SystemFont_f52fo"]
 font_names = PackedStringArray("Comic Sans MS")
+subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_5ujtb"]
 font = SubResource("SystemFont_f52fo")
@@ -66,6 +68,8 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = SubResource("CompressedTexture2D_jfien")
 expand_mode = 1
+stretch_mode = 6
+script = ExtResource("2_y2rfe")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=1919370018]
 layout_mode = 1
