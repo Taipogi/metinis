@@ -1,7 +1,8 @@
 [gd_scene format=3 uid="uid://cdwbbkykabt46"]
 
 [ext_resource type="Script" uid="uid://chtqx5lgjj8ls" path="res://main_menu.gd" id="1_jfien"]
-[ext_resource type="Script" uid="uid://dd2jv1esft0it" path="res://scripts/background.gd" id="2_y2rfe"]
+[ext_resource type="Script" uid="uid://i5b2ay8k17ue" path="res://scripts/parallax_bacdrop.gd" id="2_y2rfe"]
+[ext_resource type="Script" uid="uid://bsstsd8cc04is" path="res://scripts/parallax_item.gd" id="3_0bfng"]
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jfien"]
 load_path = "res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"
@@ -86,6 +87,10 @@ theme_override_constants/margin_left = 80
 theme_override_constants/margin_top = 40
 theme_override_constants/margin_right = 80
 theme_override_constants/margin_bottom = 40
+script = ExtResource("3_0bfng")
+max_offset = 15.0
+invert_direction = false
+smooth_speed = 12.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1921274581]
 layout_mode = 2
