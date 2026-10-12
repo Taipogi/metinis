@@ -129,6 +129,9 @@ size = Vector2(24, 36)
 
 [node name="ROOM_TEMPLATE" type="StaticBody2D" unique_id=893755609]
 script = ExtResource("1_ikcc6")
+level_complete = null
+enemy_scenes = null
+enemies_per_room = null
 
 [node name="BASE" type="TileMapLayer" parent="." unique_id=606858209]
 tile_map_data = PackedByteArray("AAAEAP7/AAACAAMAAAAEAP3/AAACAAMAAAAEAPz/AAACAAMAAAAEAAAAAAACAAMAAAAEAAEAAAACAAMAAAAEAAIAAAACAAMAAAADAPv/AAABAAAAAAACAPv/AAABAAAAAAABAPv/AAABAAAAAAD///v/AAABAAAAAAD+//v/AAABAAAAAAD9//v/AAABAAAAAAADAAMAAAAFAAEAAAACAAMAAAAFAAEAAAABAAMAAAAFAAEAAAD//wMAAAAFAAEAAAD+/wMAAAAFAAEAAAD9/wMAAAAFAAEAAAD8/wIAAAABAAMAAAD8/wEAAAABAAMAAAD8/wAAAAABAAMAAAD8//7/AAABAAMAAAD8//3/AAABAAMAAAD8//z/AAABAAMAAAD///z/AAABAAEAAAD+//z/AAABAAEAAAD9//z/AAAAAAEAAAADAPz/AAACAAEAAAABAPz/AAABAAEAAAACAPz/AAABAAEAAAD8/wMAAAAAAAMAAAAEAAMAAAAAAAIAAAAEAPv/AAACAAAAAAD8//v/AAADAAAAAAD8/wQAAAADAAEAAAAEAAQAAAADAAIAAAADAAQAAAAEAAIAAAACAAQAAAAEAAIAAAABAAQAAAAEAAIAAAD//wQAAAAEAAIAAAD+/wQAAAAEAAIAAAD9/wQAAAAEAAIAAAA=")
@@ -329,3 +332,18 @@ tile_set = SubResource("TileSet_dw0ks")
 [node name="BARRIERCOLLISION" type="CollisionShape2D" parent="ENTRANCE_WEST/BARRIER" unique_id=1250639532]
 position = Vector2(-3.8146973e-06, -7)
 shape = SubResource("RectangleShape2D_wg30l")
+
+[node name="SpawnPoints" type="Node2D" parent="." unique_id=292535490]
+
+[node name="Marker2D" type="Marker2D" parent="SpawnPoints" unique_id=1066931532]
+position = Vector2(64, 53)
+gizmo_extents = 0.0
+
+[node name="Marker2D2" type="Marker2D" parent="SpawnPoints" unique_id=729801685]
+position = Vector2(-45, -44)
+
+[node name="Marker2D3" type="Marker2D" parent="SpawnPoints" unique_id=1247755933]
+position = Vector2(62, -44)
+
+[node name="Marker2D4" type="Marker2D" parent="SpawnPoints" unique_id=1219579690]
+position = Vector2(-47, 53)

@@ -21,20 +21,7 @@ func _generate ():
 	
 	_check_room(first_room_x, first_room_y, Vector2.ZERO, true)
 	_instantiate_rooms()
-	
-	_start_level_complete_timer()
 
-func _start_level_complete_timer():
-	var timer := Timer.new()
-	timer.wait_time = 5.0
-	timer.one_shot = true
-	add_child(timer)
-	timer.timeout.connect(_on_level_complete_timer_timeout)
-	timer.start()
-
-func _on_level_complete_timer_timeout():
-	for room in rooms:
-		room.level_complete = true
 
 func _check_room (x : int, y : int, desired_direction : Vector2, is_first_room : bool = false):
 	if room_count >= rooms_to_generate:
@@ -64,25 +51,46 @@ func _check_room (x : int, y : int, desired_direction : Vector2, is_first_room :
 		_check_room(x - 1, y, Vector2.LEFT if is_first_room else desired_direction)
 		
 		
+var room_lookup : Dictionary = {}  # Vector2i -> Room
+
 func _instantiate_rooms():
+	room_lookup.clear()
+	rooms.clear()
+
+	# pass 1: create rooms
 	for x in range(map_size):
 		for y in range(map_size):
 			if _get_map(x, y) == false:
 				continue
-			
 			var room : Room = room_scene.instantiate()
-			get_tree().root.add_child.call_deferred(room)
-			rooms.append(room)
-			
-			room.global_position = Vector2(x - first_room_x, y - first_room_y) * room_pos_offset
-			
+			room.grid_pos = Vector2i(x, y)
+			room.is_start_room = (x == first_room_x and y == first_room_y)
+			room.position = Vector2(x - first_room_x, y - first_room_y) * room_pos_offset
 			room.has_neighbor = {
 				"north": _room_exists(x, y - 1),
 				"south": _room_exists(x, y + 1),
 				"east":  _room_exists(x + 1, y),
 				"west":  _room_exists(x - 1, y),
 			}
-			room.setup_doors.call_deferred()
+			room_lookup[Vector2i(x, y)] = room
+			rooms.append(room)
+
+	# pass 2: link neighbors (objects exist, so no deferring needed)
+	var offsets = {
+		"north": Vector2i(0, -1), "south": Vector2i(0, 1),
+		"east": Vector2i(1, 0), "west": Vector2i(-1, 0),
+	}
+	for room in rooms:
+		for dir in offsets:
+			var pos = room.grid_pos + offsets[dir]
+			if room_lookup.has(pos):
+				room.neighbors[dir] = room_lookup[pos]
+
+	# pass 3: add to the scene, then set up
+	for room in rooms:
+		get_tree().current_scene.add_child.call_deferred(room)
+		room.setup_doors.call_deferred()
+		room.spawn_enemies.call_deferred()
 
 func _room_exists(x : int, y : int) -> bool:
 	if x < 0 or x > map_size - 1 or y < 0 or y > map_size - 1:

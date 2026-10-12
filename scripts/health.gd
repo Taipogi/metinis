@@ -14,16 +14,13 @@ func _ready():
 
 
 func take_damage(amount: int):
+	if current_health <= 0:
+		return
 	current_health -= amount
 	current_health = max(current_health, 0)
-
 	health_changed.emit(current_health, max_health)
-
-	print("Health: ", current_health, "/", max_health)
-
 	if current_health <= 0:
 		died.emit()
-
 
 func heal(amount: int):
 	current_health += amount

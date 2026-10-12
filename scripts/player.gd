@@ -99,17 +99,18 @@ func _on_attack_sprite_frame_changed():
 func spawn_hitbox():
 	attack_point.position = lastdir * 16
 	var attack = attack_scene.instantiate()
+	attack.source = self
 	get_parent().add_child(attack)
 	attack.global_position = attack_point.global_position
 
-
 func _on_died():
-	print("PLAYER DIED")
+	get_tree().change_scene_to_file("res://scenes/Main_Menu.tscn")
 
 
 func _on_health_changed(current_health, max_health):
 	health_bar.max_value = max_health
 	health_bar.value = current_health
+	print("PLAYER (", self.name, ") health: ", current_health, "/", max_health)
 
 
 func _input(event):
