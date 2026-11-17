@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://i5b2ay8k17ue" path="res://scripts/parallax_bacdrop.gd" id="2_y2rfe"]
 [ext_resource type="Script" uid="uid://bsstsd8cc04is" path="res://scripts/parallax_item.gd" id="3_0bfng"]
 
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_jfien"]
-load_path = "res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"
+[sub_resource type="CanvasTexture" id="CanvasTexture_ical8"]
+specular_color = Color(9.62615e-08, 0.7349813, 0.6891377, 1)
 
 [sub_resource type="SystemFont" id="SystemFont_f52fo"]
 font_names = PackedStringArray("Comic Sans MS")
@@ -67,7 +67,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = SubResource("CompressedTexture2D_jfien")
+texture = SubResource("CanvasTexture_ical8")
 expand_mode = 1
 stretch_mode = 6
 script = ExtResource("2_y2rfe")
@@ -100,7 +100,7 @@ theme_override_constants/separation = 60
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1762513422]
 layout_mode = 2
-text = "SIGMA GAME"
+text = "Jono ir Kosto Žaidimas"
 label_settings = SubResource("LabelSettings_5ujtb")
 horizontal_alignment = 1
 

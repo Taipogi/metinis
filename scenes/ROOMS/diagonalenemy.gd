@@ -123,7 +123,7 @@ func _on_health_changed(current_health, max_health):
 
 
 func _on_attack_sprite_frame_changed():
-	if attack_sprite.frame == 5:
+	if attack_sprite.frame == 2:
 		if player != null and global_position.distance_to(player.global_position) < 40:
 			var current_dir = get_closest_direction(
 				(player.global_position - global_position).normalized(),

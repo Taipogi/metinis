@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cc1xn64mk0ayr"
-path="res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"
+uid="uid://u16n0lo03mtm"
+path="res://.godot/imported/ENEMYCARDINAL.png-2a29989d0f0e6e7c9444dbc12f0a72eb.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ibuprofen.jpg"
-dest_files=["res://.godot/imported/ibuprofen.jpg-6f2fb8fa0f143599677646021137c13c.ctex"]
+source_file="res://assets/ENEMYCARDINAL.png"
+dest_files=["res://.godot/imported/ENEMYCARDINAL.png-2a29989d0f0e6e7c9444dbc12f0a72eb.ctex"]
 
 [params]
 
