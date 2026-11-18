@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://d3whde6ee8gxh" path="res://assets/specattack1-sheet.png" id="4_dqkch"]
 [ext_resource type="Texture2D" uid="uid://drwdmvefj71nk" path="res://assets/specattack1RIGHT-sheet.png" id="4_smehm"]
 [ext_resource type="Texture2D" uid="uid://birojie2337em" path="res://assets/specattack1UP-sheet.png" id="5_ur7pv"]
+[ext_resource type="PackedScene" uid="uid://catkepu0wniu7" path="res://scenes/ROOMS/ARROW.tscn" id="8_smehm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dt7fs"]
 atlas = ExtResource("2_dqkch")
@@ -478,6 +479,8 @@ sprite_frames = SubResource("SpriteFrames_wg30l")
 animation = &"attack_right"
 speed_scale = 2.0
 offset = Vector2(0, -7)
+
+[node name="Arrow" parent="AttackSprite" unique_id=439207964 instance=ExtResource("8_smehm")]
 
 [connection signal="animation_finished" from="AttackSprite" to="." method="_on_attack_sprite_animation_finished"]
 [connection signal="frame_changed" from="AttackSprite" to="." method="_on_attack_sprite_frame_changed"]

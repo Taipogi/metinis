@@ -13,9 +13,13 @@ var room_pos_offset : float = 384
 var first_room_x : int = 3
 var first_room_y : int = 3
 var room_scene : PackedScene = preload("res://scenes/ROOMS/room_template.tscn")
-
+const ROOMS_PER_UPGRADE := 1
+var rooms_cleared := 0
+var upgrade_menu : UpgradeMenu
 
 func _ready():
+	upgrade_menu = UpgradeMenu.new()
+	add_child(upgrade_menu)
 	_generate()
 
 
@@ -65,6 +69,7 @@ func _instantiate_rooms():
 			if _get_map(x, y) == false:
 				continue
 			var room : Room = room_scene.instantiate()
+			room.cleared.connect(_on_room_cleared)
 			room.grid_pos = Vector2i(x, y)
 			room.is_start_room = (x == first_room_x and y == first_room_y)
 			room.position = Vector2(x - first_room_x, y - first_room_y) * room_pos_offset
@@ -117,7 +122,6 @@ func _instantiate_rooms():
 		room.setup_doors.call_deferred()
 		room.spawn_enemies.call_deferred()
 
-
 func _room_exists(x : int, y : int) -> bool:
 	if x < 0 or x > map_size - 1 or y < 0 or y > map_size - 1:
 		return false
@@ -130,3 +134,22 @@ func _get_map(x : int, y : int) -> bool:
 
 func _set_map(x : int, y : int, value : bool):
 	map[x + y * map_size] = value
+
+
+func _on_room_cleared(room : Room):
+	var player = get_tree().get_first_node_in_group("player")
+	if player:
+		player.on_room_cleared()
+
+	var show_special : bool = room.is_boss_room
+	var show_normal := false
+	if not show_special:
+		rooms_cleared += 1
+		show_normal = rooms_cleared % ROOMS_PER_UPGRADE == 0
+
+	if show_special or show_normal:
+		await get_tree().create_timer(0.6).timeout
+		if show_special:
+			upgrade_menu.open_special()
+		else:
+			upgrade_menu.open_normal()

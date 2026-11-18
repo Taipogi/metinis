@@ -27,3 +27,15 @@ func heal(amount: int):
 	current_health = min(current_health, max_health)
 
 	health_changed.emit(current_health, max_health)
+
+func increase_max(amount: int):
+	max_health += amount
+	current_health += amount
+	health_changed.emit(current_health, max_health)
+
+
+func scale_max(factor: float):
+	var ratio := float(current_health) / float(max_health)
+	max_health = maxi(1, int(round(max_health * factor)))
+	current_health = clampi(int(round(max_health * ratio)), 1, max_health)
+	health_changed.emit(current_health, max_health)

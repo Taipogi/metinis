@@ -173,6 +173,8 @@ func _on_enemy_died():
 	if enemy_count <= 0:
 		level_complete = true
 		_notify_neighbors()
+		cleared.emit(self)
+
 
 
 func unlock_entrance(dir : String):
@@ -185,3 +187,5 @@ func _notify_neighbors():
 		var neighbor : Room = neighbors[dir]
 		if neighbor:
 			neighbor.unlock_entrance(OPPOSITE[dir])
+
+signal cleared(room : Room)

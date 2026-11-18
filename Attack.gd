@@ -12,5 +12,11 @@ func _ready():
 func _on_body_entered(body):
 	if body == source:
 		return
+	if is_instance_valid(source) and source.is_in_group("enemy") and body.is_in_group("enemy"):
+		return
 	if body.has_method("take_damage"):
 		body.take_damage(damage)
+		if is_instance_valid(source) and source.has_method("on_hit_dealt"):
+			source.on_hit_dealt(body, damage)
+		if body.has_method("on_hurt_by"):
+			body.on_hurt_by(source)
