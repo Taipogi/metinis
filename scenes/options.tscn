@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://doxbr1bjd1u0j"]
 
 [ext_resource type="Script" uid="uid://i5b2ay8k17ue" path="res://scripts/parallax_bacdrop.gd" id="1_c2u1v"]
-[ext_resource type="PackedScene" uid="uid://cdwbbkykabt46" path="res://scenes/Main_Menu.tscn" id="2_yjkok"]
 
 [sub_resource type="CanvasTexture" id="CanvasTexture_yjkok"]
 specular_color = Color(9.62615e-08, 0.7349813, 0.6891377, 1)
@@ -53,10 +52,8 @@ Button/styles/pressed = SubResource("StyleBoxFlat_ldo7a")
 resource_name = "button"
 script/source = "extends Button
 
-@export var MainScene: PackedScene;
-
 func _on_pressed() -> void:
-	get_tree().change_scene_to_packed(MainScene);
+	get_tree().change_scene_to_file(\"res://scenes/Main_Menu.tscn\");
 "
 
 [node name="Options" type="Control" unique_id=1707713387]
@@ -121,6 +118,5 @@ size_flags_horizontal = 5
 size_flags_vertical = 7
 text = "BACK"
 script = SubResource("GDScript_1sggn")
-MainScene = ExtResource("2_yjkok")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button1" to="MarginContainer/VBoxContainer/ButtonList/Button1" method="_on_pressed"]
