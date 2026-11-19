@@ -135,11 +135,6 @@ func _on_health_changed(current_health, max_health):
 	health_bar.value = current_health
 	print("PLAYER (", self.name, ") health: ", current_health, "/", max_health)
 
-
-func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		health.take_damage(10)
-
 @export var projectile_scene: PackedScene   # drag Projectile.tscn here
 @export var arrow_damage := 6
 
