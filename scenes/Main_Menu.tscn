@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cb2ib7msc85br" path="res://scenes/Main.tscn" id="2_0bfng"]
 [ext_resource type="Script" uid="uid://i5b2ay8k17ue" path="res://scripts/parallax_bacdrop.gd" id="2_y2rfe"]
+[ext_resource type="PackedScene" uid="uid://doxbr1bjd1u0j" path="res://scenes/options.tscn" id="3_0bfng"]
 
 [sub_resource type="GDScript" id="GDScript_jfien"]
 script/source = "extends Control
@@ -16,19 +17,19 @@ func _on_exit_3_pressed() -> void:
 [sub_resource type="CanvasTexture" id="CanvasTexture_ical8"]
 specular_color = Color(9.62615e-08, 0.7349813, 0.6891377, 1)
 
-[sub_resource type="SystemFont" id="SystemFont_f52fo"]
+[sub_resource type="SystemFont" id="SystemFont_y2rfe"]
 font_names = PackedStringArray("Comic Sans MS")
 subpixel_positioning = 0
 
 [sub_resource type="LabelSettings" id="LabelSettings_5ujtb"]
-font = SubResource("SystemFont_f52fo")
+font = SubResource("SystemFont_y2rfe")
 font_size = 128
 font_color = Color(1, 0.40392157, 1, 1)
 shadow_size = 17
 shadow_color = Color(0, 0, 0, 0.56078434)
 shadow_offset = Vector2(3.305, 4.495)
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_gqpn8"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0bfng"]
 bg_color = Color(0.5019608, 0.45882353, 0.5411765, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
@@ -36,7 +37,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mulh1"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yb5uv"]
 bg_color = Color(0.6, 0.58431375, 0.6313726, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
@@ -44,7 +45,7 @@ corner_radius_bottom_right = 30
 corner_radius_bottom_left = 30
 shadow_size = 5
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ldo7a"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h8c6n"]
 bg_color = Color(0.4509804, 0.38431373, 0.50980395, 1)
 corner_radius_top_left = 30
 corner_radius_top_right = 30
@@ -55,11 +56,21 @@ shadow_size = 5
 [sub_resource type="Theme" id="Theme_f52fo"]
 Button/colors/font_color = Color(0, 0, 0, 1)
 Button/font_sizes/font_size = 60
-Button/styles/hover = SubResource("StyleBoxFlat_gqpn8")
-Button/styles/normal = SubResource("StyleBoxFlat_mulh1")
-Button/styles/pressed = SubResource("StyleBoxFlat_ldo7a")
+Button/styles/hover = SubResource("StyleBoxFlat_0bfng")
+Button/styles/normal = SubResource("StyleBoxFlat_yb5uv")
+Button/styles/pressed = SubResource("StyleBoxFlat_h8c6n")
 
 [sub_resource type="GDScript" id="GDScript_y2rfe"]
+resource_name = "button"
+script/source = "extends Button
+
+@export var MainScene: PackedScene;
+
+func _on_pressed() -> void:
+	get_tree().change_scene_to_packed(MainScene);
+"
+
+[sub_resource type="GDScript" id="GDScript_yjkok"]
 resource_name = "button"
 script/source = "extends Button
 
@@ -148,6 +159,8 @@ layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
 text = "OPTIONS"
+script = SubResource("GDScript_yjkok")
+MainScene = ExtResource("3_0bfng")
 
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=311850641]
 layout_mode = 2
@@ -157,4 +170,5 @@ text = "EXIT"
 script = SubResource("GDScript_0bfng")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button1" to="MarginContainer/VBoxContainer/ButtonList/Button1" method="_on_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button2" to="MarginContainer/VBoxContainer/ButtonList/Button2" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button3" to="MarginContainer/VBoxContainer/ButtonList/Button3" method="_on_pressed"]
