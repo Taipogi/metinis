@@ -14,7 +14,7 @@ var common_pool := [
 	{"id": "speed", "name": "Swift Feet", "desc": "+10% move speed", "rarity": "common"},
 	{"id": "atk_speed", "name": "Quick Hands", "desc": "+15% attack speed", "rarity": "common"},
 	{"id": "health", "name": "Vitality", "desc": "+20 max HP", "rarity": "common"},
-	{"id": "regen", "name": "Regeneration", "desc": "+0.5 HP per second", "rarity": "common"},
+	{"id": "regen", "name": "Regeneration", "desc": "+1 HP per second", "rarity": "common"},
 	{"id": "iframes", "name": "Evasion", "desc": "+0.2s invincibility after a hit", "rarity": "common"},
 	{"id": "heal_clear", "name": "Second Wind", "desc": "+8 HP when a room is cleared", "rarity": "common"},
 	{"id": "thorns", "name": "Thorns", "desc": "Attackers take 5 damage", "rarity": "common"},
@@ -124,7 +124,7 @@ func _apply(id : String, p):
 		"speed": p.move_speed_mult *= 1.10
 		"atk_speed": p.attack_speed_mult *= 1.15
 		"health": p.health.increase_max(20)
-		"regen": p.regen_per_sec += 0.5
+		"regen": p.regen_per_sec += 1
 		"iframes": p.iframe_time += 0.2
 		"heal_clear": p.heal_on_clear += 8
 		"thorns": p.thorns_damage += 5
