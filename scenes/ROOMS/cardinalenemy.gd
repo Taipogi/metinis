@@ -5,7 +5,6 @@ extends CharacterBody2D
 @export var speed := 20
 @export var attack_range := 40.0
 @export var hit_frame := 2
-
 @onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var detection_area: Area2D = $DetectionArea
 @onready var attack_sprite: AnimatedSprite2D = $Attacksprite
@@ -31,7 +30,10 @@ func _ready():
 	attack_sprite.animation_finished.connect(_on_attack_sprite_animation_finished)
 	attack_sprite.frame_changed.connect(_on_attack_sprite_frame_changed)
 	health.died.connect(_on_died)
-
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		add_collision_exception_with(p)
+		p.add_collision_exception_with(self)
 
 func _physics_process(_delta):
 	if player == null:
@@ -51,7 +53,14 @@ func _physics_process(_delta):
 
 	if can_attack and to_player.length() < attack_range:
 		attack_toward_player(to_player.normalized())
+	if to_player.length() > 30:
+		velocity = to_player.normalized() * speed
+	else:
+		velocity = Vector2.ZERO
 
+	velocity += get_soft_push()
+	velocity = velocity.limit_length(speed * 1.5)
+	move_and_slide()
 
 func play_walk_anim(direction: Vector2):
 	if abs(direction.x) > abs(direction.y):
@@ -146,3 +155,26 @@ func _on_attack_sprite_animation_finished():
 
 func _on_died():
 	queue_free()
+@export var push_radius := 22.0     # how close before the pushing starts
+@export var push_strength := 35.0   # how hard it pushes
+
+
+func get_soft_push() -> Vector2:
+	var push := Vector2.ZERO
+	var others := get_tree().get_nodes_in_group("enemy")
+	if player != null:
+		others.append(player)
+
+	for other in others:
+		if other == self or not (other is Node2D):
+			continue
+		var offset : Vector2 = global_position - other.global_position
+		var dist := offset.length()
+		if dist >= push_radius:
+			continue
+		if dist < 0.01:
+			offset = Vector2.from_angle(randf() * TAU)   # exactly on top: pick a random direction
+			dist = 0.01
+		push += offset.normalized() * (1.0 - dist / push_radius)
+
+	return push * push_strength

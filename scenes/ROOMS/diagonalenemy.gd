@@ -21,6 +21,7 @@ var pending_dir := Vector2.ZERO
 
 
 func _ready():
+	add_to_group("enemy")
 	detection_area.body_entered.connect(_on_detection_area_body_entered)
 	detection_area.body_exited.connect(_on_detection_area_body_exited)
 	attack_sprite.visible = false
@@ -28,45 +29,56 @@ func _ready():
 	attack_sprite.frame_changed.connect(_on_attack_sprite_frame_changed)
 	health.died.connect(_on_died)
 	health.health_changed.connect(_on_health_changed)
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		add_collision_exception_with(p)
+		p.add_collision_exception_with(self)
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	if player == null:
 		velocity = Vector2.ZERO
 		move_and_slide()
 		return
-	
+
 	var to_player = player.global_position - global_position
-	velocity = to_player.normalized() * speed
+
+	if to_player.length() > 30:
+		velocity = to_player.normalized() * speed
+	else:
+		velocity = Vector2.ZERO
 	move_and_slide()
-	
-	play_walk_anim(velocity)
-	
+
+	play_walk_anim(to_player)
+
 	if can_attack and to_player.length() < 40:
 		attack_toward_player(to_player.normalized())
+	if to_player.length() > 30:
+		velocity = to_player.normalized() * speed
+	else:
+		velocity = Vector2.ZERO
 
+	velocity += get_soft_push()
+	velocity = velocity.limit_length(speed * 1.5)
+	move_and_slide()
 
 func play_walk_anim(direction: Vector2):
 	if direction.length() == 0:
 		return
-	if direction.x > 0:
-		sprite.play("WALK_RIGHT")
-	elif direction.x < 0:
-		sprite.play("WALK_LEFT")
-	elif direction.y > 0:
-		sprite.play("WALK_DOWN")
-	elif direction.y < 0:
-		sprite.play("WALK_UP")
+	if abs(direction.x) > abs(direction.y):
+		sprite.play("WALK_RIGHT" if direction.x > 0 else "WALK_LEFT")
+	else:
+		sprite.play("WALK_DOWN" if direction.y > 0 else "WALK_UP")
 
 
 func attack_toward_player(direction: Vector2):
 	if player == null or global_position.distance_to(player.global_position) >= 40:
 		return
-	
+
 	can_attack = false
 	pending_dir = get_closest_direction(direction, DIAGONAL_DIRECTIONS)
 	play_attack_anim(pending_dir)
-	
+
 	await get_tree().create_timer(attack_cooldown).timeout
 	can_attack = true
 
@@ -74,7 +86,7 @@ func attack_toward_player(direction: Vector2):
 func play_attack_anim(dir: Vector2):
 	attack_sprite.visible = true
 	attack_sprite.position = dir * 24
-	
+
 	if dir.x > 0 and dir.y > 0:
 		attack_sprite.play("Attack_DownRight")
 	elif dir.x < 0 and dir.y > 0:
@@ -139,3 +151,28 @@ func spawn_hitbox(dir: Vector2):
 	get_parent().add_child(attack)
 	attack.global_position = global_position + dir * 16
 	attack.rotation = dir.angle()
+
+
+@export var push_radius := 22.0     # how close before the pushing starts
+@export var push_strength := 35.0   # how hard it pushes
+
+
+func get_soft_push() -> Vector2:
+	var push := Vector2.ZERO
+	var others := get_tree().get_nodes_in_group("enemy")
+	if player != null:
+		others.append(player)
+
+	for other in others:
+		if other == self or not (other is Node2D):
+			continue
+		var offset : Vector2 = global_position - other.global_position
+		var dist := offset.length()
+		if dist >= push_radius:
+			continue
+		if dist < 0.01:
+			offset = Vector2.from_angle(randf() * TAU)   # exactly on top: pick a random direction
+			dist = 0.01
+		push += offset.normalized() * (1.0 - dist / push_radius)
+
+	return push * push_strength

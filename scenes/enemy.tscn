@@ -111,3 +111,5 @@ theme_override_font_sizes/font_size = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea" unique_id=1118831504]
 position = Vector2(0, 2)
 shape = SubResource("RectangleShape2D_4ra3w")
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=634904092]

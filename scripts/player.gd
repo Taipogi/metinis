@@ -40,7 +40,7 @@ func take_damage(amount):
 
 func _physics_process(delta):
 	var direction = Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	velocity = direction * mspeed
+	velocity = direction * mspeed * move_speed_mult + get_enemy_push()
 	move_and_slide()
 	
 	if direction.length() > 0:
@@ -211,3 +211,11 @@ func get_attack_anim(direction: Vector2) -> String:
 	if abs(direction.x) > abs(direction.y):
 		return "attack_right" if direction.x > 0 else "attack_left"
 	return "attack_down" if direction.y > 0 else "attack_up"
+func get_enemy_push() -> Vector2:
+	var push := Vector2.ZERO
+	for enemy in get_tree().get_nodes_in_group("enemy"):
+		var offset : Vector2 = global_position - enemy.global_position
+		var dist := offset.length()
+		if dist < 22.0 and dist > 0.01:
+			push += offset.normalized() * (1.0 - dist / 22.0)
+	return push * 30.0
