@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://dggx8bme5gefg"
-path="res://.godot/imported/BOW.PNG-94573e24152e25518c1b1a69659e14d0.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://assets/BOW.PNG"
-dest_files=["res://.godot/imported/BOW.PNG-94573e24152e25518c1b1a69659e14d0.ctex"]
 
 [params]
 

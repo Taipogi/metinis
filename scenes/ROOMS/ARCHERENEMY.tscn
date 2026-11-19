@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://ctnc72gtu757v" path="res://scenes/ROOMS/archerenemy.gd" id="1_agxlg"]
 [ext_resource type="Script" uid="uid://bcymfsv807y84" path="res://scripts/health.gd" id="1_rsrgk"]
-[ext_resource type="Texture2D" uid="uid://buuqwawuabb11" path="res://assets/ARCHER.PNG" id="2_agxlg"]
-[ext_resource type="Texture2D" uid="uid://dggx8bme5gefg" path="res://assets/BOW.PNG" id="4_8jkc4"]
-[ext_resource type="Texture2D" uid="uid://ssgkrym4018p" path="res://assets/BOWTRIPLE.PNG" id="5_hh1gd"]
+[ext_resource type="Texture2D" uid="uid://pueplb6olf1m" path="res://assets/ARCHER.png" id="2_agxlg"]
+[ext_resource type="Texture2D" uid="uid://cpf1lxss3sh0w" path="res://assets/BOW.png" id="4_8jkc4"]
+[ext_resource type="Texture2D" uid="uid://bqeo7opm6reby" path="res://assets/BOWTRIPLE.png" id="5_hh1gd"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_wg30l"]
 size = Vector2(15, 23)

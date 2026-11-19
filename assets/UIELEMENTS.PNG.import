@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ckphefwp8ckca"
-path="res://.godot/imported/UIELEMENTS.PNG-49560080e373706e6d44b672458eb731.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://assets/UIELEMENTS.PNG"
-dest_files=["res://.godot/imported/UIELEMENTS.PNG-49560080e373706e6d44b672458eb731.ctex"]
 
 [params]
 

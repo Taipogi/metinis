@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://catkepu0wniu7"]
 
 [ext_resource type="Script" uid="uid://es7ngas410iy" path="res://scenes/ROOMS/arrow.gd" id="1_ve6bu"]
-[ext_resource type="Texture2D" uid="uid://dggx8bme5gefg" path="res://assets/BOW.PNG" id="2_lnpku"]
+[ext_resource type="Texture2D" uid="uid://cpf1lxss3sh0w" path="res://assets/BOW.png" id="2_lnpku"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wg30l"]
 radius = 1.0

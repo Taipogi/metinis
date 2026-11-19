@@ -3,15 +3,11 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://ssgkrym4018p"
-path="res://.godot/imported/BOWTRIPLE.PNG-4326032e2139f1e45daa2fe8e541407e.ctex"
-metadata={
-"vram_texture": false
-}
+valid=false
 
 [deps]
 
 source_file="res://assets/BOWTRIPLE.PNG"
-dest_files=["res://.godot/imported/BOWTRIPLE.PNG-4326032e2139f1e45daa2fe8e541407e.ctex"]
 
 [params]
 
