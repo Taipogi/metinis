@@ -4,22 +4,40 @@ extends Node2D
 @export var map_size : int = 7
 @export var rooms_to_generate : int = 12
 @export var player : CharacterBody2D
+@export var room_templates : Array[PackedScene] = [
+	preload("res://scenes/ROOMS/AONEroom_template.tscn"),
+	preload("res://scenes/ROOMS/TWOroomtemplate.tscn"),
+	preload("res://scenes/ROOMS/AAATHREEroom_template.tscn"),
+]
+const ROOMS_PER_UPGRADE := 1
 
 var room_count : int = 0
 var map : Array[bool]
 var rooms : Array[Room]
-var room_lookup : Dictionary = {} 
+var room_lookup : Dictionary = {}
 var room_pos_offset : float = 384
 var first_room_x : int = 3
 var first_room_y : int = 3
-var room_scene : PackedScene = preload("res://scenes/ROOMS/room_template.tscn")
-const ROOMS_PER_UPGRADE := 1
 var rooms_cleared := 0
 var upgrade_menu : UpgradeMenu
+var current_level := 0
+var player_start := Vector2.ZERO
+
 
 func _ready():
 	upgrade_menu = UpgradeMenu.new()
 	add_child(upgrade_menu)
+
+	if room_templates.is_empty():
+		push_error("RoomGeneration has no room templates assigned")
+		return
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		player_start = p.global_position
+	_start_level(0)
+func _start_level(index : int):
+	current_level = index
+	rooms_cleared = 0
 	_generate()
 
 
@@ -68,7 +86,7 @@ func _instantiate_rooms():
 		for y in range(map_size):
 			if _get_map(x, y) == false:
 				continue
-			var room : Room = room_scene.instantiate()
+			var room : Room = room_templates[current_level].instantiate()
 			room.cleared.connect(_on_room_cleared)
 			room.grid_pos = Vector2i(x, y)
 			room.is_start_room = (x == first_room_x and y == first_room_y)
@@ -82,6 +100,7 @@ func _instantiate_rooms():
 			room_lookup[Vector2i(x, y)] = room
 			rooms.append(room)
 
+	
 	var edge_rooms : Array[Room] = []
 	for room in rooms:
 		var p = room.grid_pos
@@ -105,6 +124,7 @@ func _instantiate_rooms():
 	if boss_room:
 		boss_room.is_boss_room = true
 
+
 	var offsets = {
 		"north": Vector2i(0, -1), "south": Vector2i(0, 1),
 		"east": Vector2i(1, 0), "west": Vector2i(-1, 0),
@@ -121,6 +141,51 @@ func _instantiate_rooms():
 	for room in rooms:
 		room.setup_doors.call_deferred()
 		room.spawn_enemies.call_deferred()
+	var room : Room = room_templates[current_level].instantiate()
+	print("level ", current_level, " template: ", room_templates[current_level].resource_path)
+
+func _on_room_cleared(room : Room):
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		p.on_room_cleared()
+
+	if room.is_boss_room:
+		await get_tree().create_timer(0.6).timeout
+		upgrade_menu.open_special()
+		await upgrade_menu.closed
+		_next_level()
+		return
+
+	rooms_cleared += 1
+	if rooms_cleared % ROOMS_PER_UPGRADE == 0:
+		await get_tree().create_timer(0.6).timeout
+		upgrade_menu.open_normal()
+
+
+func _next_level():
+	var next := current_level + 1
+	if next >= room_templates.size():
+		_game_won()
+		return
+
+	for room in rooms:
+		if is_instance_valid(room):
+			room.queue_free()
+	rooms.clear()
+	room_lookup.clear()
+
+	await get_tree().process_frame
+
+	var p = get_tree().get_first_node_in_group("player")
+	if p:
+		p.global_position = player_start
+	_start_level(next)
+
+
+func _game_won():
+	print("All levels cleared")
+	get_tree().change_scene_to_file("res://scenes/Main_Menu.tscn")
+
 
 func _room_exists(x : int, y : int) -> bool:
 	if x < 0 or x > map_size - 1 or y < 0 or y > map_size - 1:
@@ -134,22 +199,3 @@ func _get_map(x : int, y : int) -> bool:
 
 func _set_map(x : int, y : int, value : bool):
 	map[x + y * map_size] = value
-
-
-func _on_room_cleared(room : Room):
-	var player = get_tree().get_first_node_in_group("player")
-	if player:
-		player.on_room_cleared()
-
-	var show_special : bool = room.is_boss_room
-	var show_normal := false
-	if not show_special:
-		rooms_cleared += 1
-		show_normal = rooms_cleared % ROOMS_PER_UPGRADE == 0
-
-	if show_special or show_normal:
-		await get_tree().create_timer(0.6).timeout
-		if show_special:
-			upgrade_menu.open_special()
-		else:
-			upgrade_menu.open_normal()

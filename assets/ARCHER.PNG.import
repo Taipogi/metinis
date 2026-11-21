@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://buuqwawuabb11"
-valid=false
+uid="uid://pueplb6olf1m"
+path="res://.godot/imported/ARCHER.png-297c6c4a070115b21f6f51904fcdea3b.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://assets/ARCHER.PNG"
+source_file="res://assets/ARCHER.png"
+dest_files=["res://.godot/imported/ARCHER.png-297c6c4a070115b21f6f51904fcdea3b.ctex"]
 
 [params]
 

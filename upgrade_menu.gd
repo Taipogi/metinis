@@ -9,38 +9,37 @@ const COLORS := {
 }
 
 var common_pool := [
-	{"id": "aoe", "name": "Wide Swing", "desc": "+15% attack area", "rarity": "common"},
-	{"id": "damage", "name": "Sharpened Blade", "desc": "+15% damage", "rarity": "common"},
-	{"id": "speed", "name": "Swift Feet", "desc": "+10% move speed", "rarity": "common"},
-	{"id": "atk_speed", "name": "Quick Hands", "desc": "+15% attack speed", "rarity": "common"},
-	{"id": "health", "name": "Vitality", "desc": "+20 max HP", "rarity": "common"},
-	{"id": "regen", "name": "Regeneration", "desc": "+1 HP per second", "rarity": "common"},
-	{"id": "iframes", "name": "Evasion", "desc": "+0.2s invincibility after a hit", "rarity": "common"},
-	{"id": "heal_clear", "name": "Second Wind", "desc": "+8 HP when a room is cleared", "rarity": "common"},
-	{"id": "thorns", "name": "Thorns", "desc": "Attackers take 5 damage", "rarity": "common"},
+	{"id": "aoe", "name": "Platesnis kardas", "desc": "+15% didesnis atakos plotas", "rarity": "common"},
+	{"id": "damage", "name": "Aštrus ašmuo", "desc": "+15% daugiau žalos", "rarity": "common"},
+	{"id": "speed", "name": "Greitos kojos", "desc": "+10% greičiau vaikštai", "rarity": "common"},
+	{"id": "atk_speed", "name": "Greitos rankos", "desc": "+15% greičiau atakuoji", "rarity": "common"},
+	{"id": "health", "name": "Stipri sveikata", "desc": "+20 HP", "rarity": "common"},
+	{"id": "regen", "name": "Atgijimas", "desc": "+1 HP per sekundę", "rarity": "common"},
+	{"id": "iframes", "name": "Koncentracija", "desc": "+0.5s nemirtingumo laiko po smūgio", "rarity": "common"},
+	{"id": "heal_clear", "name": "Pasistiprinimas", "desc": "+8 HP kai išvalai kambarį", "rarity": "common"},
+	{"id": "thorns", "name": "Aštrūs šarvai", "desc": "Tave žalojantiems priešams automatiškai nuimama -10 HP", "rarity": "common"},
 ]
 
 var rare_pool := [
-	{"id": "r_glass", "name": "Glass Cannon", "desc": "+30% damage\n-40% health", "rarity": "rare"},
-	{"id": "r_swift", "name": "Light Footed", "desc": "+25% speed\n-30% health", "rarity": "rare"},
-	{"id": "r_tank", "name": "Juggernaut", "desc": "+50% health\n-25% speed", "rarity": "rare"},
-	{"id": "r_wide", "name": "Broad Strokes", "desc": "+25% area\n-25% damage", "rarity": "rare"},
-	{"id": "r_focus", "name": "Focused Strike", "desc": "+20% damage\n-25% area", "rarity": "rare"},
-	{"id": "r_heavy", "name": "Heavy Hitter", "desc": "+25% damage\n-40% attack speed", "rarity": "rare"},
-	{"id": "r_gamble", "name": "Gamble", "desc": "2 random buffs", "rarity": "rare"},
+	{"id": "r_glass", "name": "Prasti šarvai, geras ginklas", "desc": "+30% žalos\n-40% HP", "rarity": "rare"},
+	{"id": "r_swift", "name": "Lengvi šarvai", "desc": "+25% greičio\n-30% HP", "rarity": "rare"},
+	{"id": "r_tank", "name": "Stambus sudėjimas", "desc": "+50% HP\n-25% greičio", "rarity": "rare"},
+	{"id": "r_wide", "name": "Plačios rankos", "desc": "+25% atakos pločio\n-25% žalos", "rarity": "rare"},
+	{"id": "r_focus", "name": "Sutelkimas jėgų", "desc": "+20% žalos\n-25% atakos pločio", "rarity": "rare"},
+	{"id": "r_heavy", "name": "Sunkus smūgis", "desc": "+25% žalos\n-40% atakos greičio", "rarity": "rare"},
+	{"id": "r_gamble", "name": "Šansas", "desc": "gauk 2 nežinomus pastiprinimus", "rarity": "rare"},
 ]
 
 var special_pool := [
-	{"id": "s_arrow", "name": "Extra Arrow", "desc": "Each attack also fires an arrow", "rarity": "special"},
-	{"id": "s_double", "name": "Double Strike", "desc": "Attack twice", "rarity": "special"},
-	{"id": "s_lifesteal", "name": "Lifesteal", "desc": "Heal 20% of damage dealt", "rarity": "special"},
+	{"id": "s_double", "name": "Dvigubas smūgis", "desc": "Atakuok dukart", "rarity": "special"},
+	{"id": "s_lifesteal", "name": "Gybybės atėmimas", "desc": "atgauk 20% padarytos žalos kaip HP", "rarity": "special"},
 ]
 
 var box : HBoxContainer
 
 
 func _ready():
-	process_mode = Node.PROCESS_MODE_ALWAYS   # buttons must work while the game is paused
+	process_mode = Node.PROCESS_MODE_ALWAYS
 	layer = 10
 	visible = false
 
@@ -109,13 +108,14 @@ func _show(options : Array):
 	box.get_child(0).grab_focus()
 
 
+signal closed
+
 func _choose(id : String, p):
 	_apply(id, p)
 	_clamp_stats(p)
 	visible = false
 	get_tree().paused = false
-
-
+	closed.emit()
 
 func _apply(id : String, p):
 	match id:
@@ -125,7 +125,7 @@ func _apply(id : String, p):
 		"atk_speed": p.attack_speed_mult *= 1.15
 		"health": p.health.increase_max(20)
 		"regen": p.regen_per_sec += 1
-		"iframes": p.iframe_time += 0.2
+		"iframes": p.iframe_time += 0.5
 		"heal_clear": p.heal_on_clear += 8
 		"thorns": p.thorns_damage += 5
 

@@ -2,7 +2,6 @@
 
 [ext_resource type="PackedScene" uid="uid://cb2ib7msc85br" path="res://scenes/Main.tscn" id="2_0bfng"]
 [ext_resource type="Script" uid="uid://i5b2ay8k17ue" path="res://scripts/parallax_bacdrop.gd" id="2_y2rfe"]
-[ext_resource type="PackedScene" uid="uid://doxbr1bjd1u0j" path="res://scenes/options.tscn" id="3_0bfng"]
 
 [sub_resource type="GDScript" id="GDScript_jfien"]
 script/source = "extends Control
@@ -61,16 +60,6 @@ Button/styles/normal = SubResource("StyleBoxFlat_yb5uv")
 Button/styles/pressed = SubResource("StyleBoxFlat_h8c6n")
 
 [sub_resource type="GDScript" id="GDScript_y2rfe"]
-resource_name = "button"
-script/source = "extends Button
-
-@export var MainScene: PackedScene;
-
-func _on_pressed() -> void:
-	get_tree().change_scene_to_packed(MainScene);
-"
-
-[sub_resource type="GDScript" id="GDScript_yjkok"]
 resource_name = "button"
 script/source = "extends Button
 
@@ -150,25 +139,16 @@ theme_override_constants/separation = 16
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
-text = "START GAME"
+text = "PRADĖTI ŽAISTI"
 script = SubResource("GDScript_y2rfe")
 MainScene = ExtResource("2_0bfng")
-
-[node name="Button2" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=1328987217]
-layout_mode = 2
-size_flags_horizontal = 5
-size_flags_vertical = 7
-text = "OPTIONS"
-script = SubResource("GDScript_yjkok")
-MainScene = ExtResource("3_0bfng")
 
 [node name="Button3" type="Button" parent="MarginContainer/VBoxContainer/ButtonList" unique_id=311850641]
 layout_mode = 2
 size_flags_horizontal = 5
 size_flags_vertical = 7
-text = "EXIT"
+text = "IŠEITI"
 script = SubResource("GDScript_0bfng")
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button1" to="MarginContainer/VBoxContainer/ButtonList/Button1" method="_on_pressed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button2" to="MarginContainer/VBoxContainer/ButtonList/Button2" method="_on_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonList/Button3" to="MarginContainer/VBoxContainer/ButtonList/Button3" method="_on_pressed"]

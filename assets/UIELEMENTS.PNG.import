@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ckphefwp8ckca"
-valid=false
+uid="uid://bhpmvuc8r7ac1"
+path="res://.godot/imported/UIELEMENTS.png-9f7d6e8dfdf953a29a48779ba9533ddc.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://assets/UIELEMENTS.PNG"
+source_file="res://assets/UIELEMENTS.png"
+dest_files=["res://.godot/imported/UIELEMENTS.png-9f7d6e8dfdf953a29a48779ba9533ddc.ctex"]
 
 [params]
 

@@ -1,10 +1,13 @@
 [gd_scene format=4 uid="uid://bjlyc0dfidj7k"]
 
-[ext_resource type="Texture2D" uid="uid://pg75aee0s2bw" path="res://WALLSANDTILES/DUNGEONWALLS.png" id="1_gdsuq"]
-[ext_resource type="Script" uid="uid://dxp0pa1kjohtg" path="res://scripts/Room.gd" id="1_ikcc6"]
+[ext_resource type="Script" uid="uid://dxp0pa1kjohtg" path="res://scripts/Room.gd" id="1_6vpq3"]
+[ext_resource type="PackedScene" uid="uid://duxu7dlhty7e4" path="res://scenes/ROOMS/MageEnemy.tscn" id="2_cgs6x"]
+[ext_resource type="PackedScene" uid="uid://cjwe084l37bvx" path="res://scenes/ROOMS/GolemEnemy.tscn" id="3_3tfm0"]
+[ext_resource type="PackedScene" uid="uid://ba5m15327yl" path="res://scenes/ROOMS/SpearmanEnemy.tscn" id="4_cnnin"]
+[ext_resource type="Texture2D" uid="uid://pg75aee0s2bw" path="res://WALLSANDTILES/DUNGEONWALLS.png" id="5_qnjsi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0bbpv"]
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 separation = Vector2i(5, 5)
 texture_region_size = Vector2i(24, 24)
 0:0/0 = 0
@@ -43,7 +46,7 @@ tile_size = Vector2i(24, 24)
 sources/0 = SubResource("TileSetAtlasSource_0bbpv")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ikcc6"]
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 separation = Vector2i(5, 5)
 texture_region_size = Vector2i(24, 24)
 0:0/0 = 0
@@ -95,7 +98,7 @@ size = Vector2(24, 24)
 [sub_resource type="CircleShape2D" id="CircleShape2D_54q3l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i8f42"]
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 separation = Vector2i(5, 5)
 texture_region_size = Vector2i(24, 24)
 0:0/0 = 0
@@ -136,7 +139,9 @@ sources/0 = SubResource("TileSetAtlasSource_i8f42")
 size = Vector2(24, 36)
 
 [node name="ROOM_TEMPLATE" type="StaticBody2D" unique_id=893755609]
-script = ExtResource("1_ikcc6")
+script = ExtResource("1_6vpq3")
+enemy_scenes = Array[PackedScene]([ExtResource("2_cgs6x"), ExtResource("3_3tfm0")])
+boss_scene = ExtResource("4_cnnin")
 
 [node name="BASE" type="TileMapLayer" parent="." unique_id=606858209]
 tile_map_data = PackedByteArray("AAD6/wUAAAABAAMAAAD6/wQAAAABAAMAAAD6/wMAAAABAAMAAAD6/wIAAAABAAMAAAD6/wEAAAABAAMAAAD6/wAAAAABAAMAAAD6//7/AAABAAMAAAD6//3/AAABAAMAAAD6//z/AAABAAMAAAD6//v/AAABAAMAAAD6//r/AAABAAMAAAD7/wUAAAAFAAIAAAD8/wUAAAAFAAIAAAD9/wUAAAAFAAIAAAD+/wUAAAAFAAIAAAD//wUAAAAFAAIAAAABAAUAAAAFAAIAAAACAAUAAAAFAAIAAAADAAUAAAAFAAIAAAAEAAUAAAAFAAIAAAAFAAUAAAAFAAIAAAD7/wYAAAAEAAEAAAD8/wYAAAAEAAEAAAD9/wYAAAAEAAEAAAD+/wYAAAAEAAEAAAD//wYAAAAEAAEAAAABAAYAAAAEAAEAAAACAAYAAAAEAAEAAAADAAYAAAAEAAEAAAAEAAYAAAAEAAEAAAAFAAYAAAAEAAEAAAD6/wYAAAADAAEAAAAGAAYAAAADAAIAAAAGAAUAAAACAAMAAAAGAAQAAAACAAMAAAAGAAMAAAACAAMAAAAGAAIAAAACAAMAAAAGAAEAAAACAAMAAAAGAAAAAAACAAMAAAAGAP7/AAACAAMAAAAGAP3/AAACAAMAAAAGAPz/AAACAAMAAAAGAPv/AAACAAMAAAAGAPr/AAACAAMAAAD6//n/AAABAAMAAAAGAPn/AAACAAMAAAD7//n/AAABAAEAAAD8//n/AAABAAEAAAD9//n/AAABAAEAAAD+//n/AAABAAEAAAD///n/AAABAAEAAAABAPn/AAABAAEAAAACAPn/AAABAAEAAAADAPn/AAABAAEAAAAEAPn/AAABAAEAAAAFAPn/AAABAAEAAAD7//j/AAABAAAAAAD8//j/AAABAAAAAAD9//j/AAABAAAAAAD+//j/AAABAAAAAAD///j/AAABAAAAAAABAPj/AAABAAAAAAACAPj/AAABAAAAAAADAPj/AAABAAAAAAAEAPj/AAABAAAAAAAFAPj/AAABAAAAAAD6//j/AAADAAAAAAAGAPj/AAACAAAAAAA=")
@@ -177,7 +182,7 @@ tile_set = SubResource("TileSet_wg30l")
 
 [node name="DOORSPRITE" type="Sprite2D" parent="ENTRANCE_NORTH/DOOR/DOOR_SHUT" unique_id=1742295314]
 position = Vector2(12, -156)
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 region_enabled = true
 region_rect = Rect2(29, 58, 24, 24)
 
@@ -223,7 +228,7 @@ tile_set = SubResource("TileSet_wg30l")
 position = Vector2(11.999994, -126)
 rotation = -1.5707964
 scale = Vector2(0.96153843, 1)
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 region_enabled = true
 region_rect = Rect2(40, 87, 13, 24)
 
@@ -269,7 +274,7 @@ tile_set = SubResource("TileSet_wg30l")
 position = Vector2(11.9999895, -127)
 rotation = -1.5707964
 scale = Vector2(0.96153843, 1)
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 region_enabled = true
 region_rect = Rect2(40, 87, 13, 24)
 
@@ -313,7 +318,7 @@ tile_set = SubResource("TileSet_wg30l")
 position = Vector2(11.999998, -126)
 rotation = -1.5707964
 scale = Vector2(0.96153843, 1)
-texture = ExtResource("1_gdsuq")
+texture = ExtResource("5_qnjsi")
 region_enabled = true
 region_rect = Rect2(40, 87, 13, 24)
 

@@ -1,0 +1,63 @@
+[gd_scene format=3 uid="uid://35ailw7hcyd3"]
+
+[ext_resource type="Texture2D" uid="uid://dgtqfws3hmgmx" path="res://assets/spearattack.png" id="1_ut2iy"]
+
+[sub_resource type="GDScript" id="GDScript_wg30l"]
+resource_name = "spear_thrust"
+script/source = "extends Area2D
+
+@export var damage := 12
+@export var reach := 48.0 
+@export var out_time := 0.10  
+@export var hold_time := 0.05  
+@export var back_time := 0.18  
+
+var direction := Vector2.RIGHT
+var source: Node = null
+var extension := 0.0
+var has_hit := false
+
+
+func _ready():
+	body_entered.connect(_on_body_entered)
+	rotation = direction.angle()
+
+	var tw := create_tween()
+	tw.tween_property(self, \"extension\", reach, out_time)
+	tw.tween_interval(hold_time)
+	tw.tween_property(self, \"extension\", 0.0, back_time)
+	tw.tween_callback(queue_free)
+
+
+func _physics_process(_delta):
+	position = direction * extension 
+
+
+func _on_body_entered(body):
+	if has_hit or body == source:
+		return
+	if is_instance_valid(source) and source.is_in_group(\"enemy\") and body.is_in_group(\"enemy\"):
+		return
+
+	if body.has_method(\"take_damage\"):
+		has_hit = true
+		body.take_damage(damage)
+		if is_instance_valid(source) and source.has_method(\"on_hit_dealt\"):
+			source.on_hit_dealt(body, damage)
+		if body.has_method(\"on_hurt_by\"):
+			body.on_hurt_by(source)
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_54q3l"]
+size = Vector2(41, 2)
+
+[node name="SpearThrust" type="Area2D" unique_id=1200997341]
+script = SubResource("GDScript_wg30l")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1061376516]
+rotation = 0.7853982
+texture = ExtResource("1_ut2iy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=188803236]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_54q3l")

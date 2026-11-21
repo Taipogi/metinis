@@ -28,7 +28,6 @@ func _ready():
 	attack_sprite.animation_finished.connect(_on_attack_sprite_animation_finished)
 	attack_sprite.frame_changed.connect(_on_attack_sprite_frame_changed)
 	health.died.connect(_on_died)
-	health.health_changed.connect(_on_health_changed)
 	var p = get_tree().get_first_node_in_group("player")
 	if p:
 		add_collision_exception_with(p)
@@ -128,12 +127,6 @@ func _on_attack_sprite_animation_finished():
 
 func _on_died():
 	queue_free()
-
-
-func _on_health_changed(current_health, max_health):
-	print("ENEMY (", self.name, ") health: ", current_health, "/", max_health)
-
-
 func _on_attack_sprite_frame_changed():
 	if attack_sprite.frame == 2:
 		if player != null and global_position.distance_to(player.global_position) < 40:

@@ -70,14 +70,6 @@ func start_attack():
 	attack_anim(lastdir)
 
 func attack_anim(direction):
-	if direction.x > 0:
-		attack_sprite.play("attack_right")
-	elif direction.x < 0:
-		attack_sprite.play("attack_left")
-	elif direction.y > 0:
-		attack_sprite.play("attack_down")
-	else:
-		attack_sprite.play("attack_up")
 	current_attack_anim = get_attack_anim(direction)
 	attack_sprite.position = ATTACK_OFFSETS[current_attack_anim] * hitbox_scale
 	attack_sprite.play(current_attack_anim)
@@ -115,16 +107,10 @@ func _on_attack_sprite_frame_changed():
 
 func spawn_hitbox():
 	_strike()
-	attack_point.position = lastdir * 16
-	var attack = attack_scene.instantiate()
-	attack.source = self
-	get_parent().add_child(attack)
-	attack.global_position = attack_point.global_position
 	if attack_twice:
 		await get_tree().create_timer(0.2 / attack_speed_mult).timeout
 		if is_inside_tree():
 			_strike()
-
 
 func _on_died():
 	get_tree().change_scene_to_file("res://scenes/Main_Menu.tscn")
@@ -135,7 +121,7 @@ func _on_health_changed(current_health, max_health):
 	health_bar.value = current_health
 	print("PLAYER (", self.name, ") health: ", current_health, "/", max_health)
 
-@export var projectile_scene: PackedScene   # drag Projectile.tscn here
+@export var projectile_scene: PackedScene
 @export var arrow_damage := 6
 
 var damage_mult := 1.0

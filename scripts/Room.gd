@@ -2,19 +2,16 @@ class_name Room
 extends Node2D
 
 signal player_exited(direction : String, room : Room)
+signal cleared(room : Room)
 
 var grid_pos : Vector2i = Vector2i.ZERO
 var is_start_room := false
 var is_boss_room := false
 
-@export var enemy_scenes: Array[PackedScene] = [
-	preload("res://scenes/ROOMS/CARDINALENEMY.tscn"),
-	preload("res://scenes/ROOMS/DIAGONALENEMY.tscn"),
-]
-@export var boss_scene:PackedScene = preload("res://scenes/ROOMS/ARCHERENEMY.tscn")     
+@export var enemy_scenes: Array[PackedScene] = []
+@export var boss_scene: PackedScene
 @export var enemies_per_room := 2
 @onready var spawn_points: Node = $SpawnPoints
-
 var spawned := false
 var enemy_count := 0
 
@@ -59,6 +56,7 @@ const OPPOSITE = {
 	"west": $ENTRANCE_WEST,
 }
 
+
 func _ready():
 	_connect_exit_triggers()
 
@@ -101,6 +99,7 @@ func setup_doors():
 		var barrier : Node = entrance.get_node_or_null("BARRIER")
 		var neighbor_exists : bool = has_neighbor[dir]
 
+		# true = the shut-door graphic and collision are on (door closed)
 		var door_closed : bool = neighbor_exists and not level_complete and not forced_open[dir]
 
 		if door_shut:
@@ -116,6 +115,8 @@ func setup_doors():
 			for barrier_col in _get_collision_children(barrier):
 				barrier_col.set_deferred("disabled", neighbor_exists)
 
+
+
 func spawn_enemies():
 	if spawned:
 		return
@@ -127,6 +128,9 @@ func spawn_enemies():
 			points.append(p)
 	points.shuffle()
 
+	print(name, " spawn check | start=", is_start_room, " boss=", is_boss_room,
+		" points=", points.size(), " enemy_scenes=", enemy_scenes.size())
+
 	if is_start_room or points.is_empty() or enemy_scenes.is_empty():
 		level_complete = true
 		_notify_neighbors()
@@ -136,13 +140,13 @@ func spawn_enemies():
 		for p in points:
 			_spawn_enemy(enemy_scenes.pick_random(), p.global_position)
 
-		var archer_spawn = find_child("ArcherSpawn", true, false)
+		var boss_spawn = find_child("ArcherSpawn", true, false)
 		if boss_scene == null:
-			push_warning("Boss Scene is empty on the Room root in room_template.tscn")
-		elif archer_spawn == null:
+			push_warning("Boss Scene is empty on this room template")
+		elif boss_spawn == null:
 			push_warning("No node named ArcherSpawn found in this room")
 		else:
-			_spawn_enemy(boss_scene, archer_spawn.global_position)
+			_spawn_enemy(boss_scene, boss_spawn.global_position)
 	else:
 		var count : int = min(enemies_per_room, points.size())
 		for i in count:
@@ -154,6 +158,7 @@ func spawn_enemies():
 
 func _spawn_enemy(scene: PackedScene, pos: Vector2):
 	var enemy = scene.instantiate()
+	print(name, " spawning: ", scene.resource_path)
 	add_child(enemy)
 	enemy.global_position = pos
 	register_enemy(enemy)
@@ -179,7 +184,8 @@ func _on_enemy_died():
 
 func unlock_entrance(dir : String):
 	forced_open[dir] = true
-	setup_doors()
+	if is_node_ready():
+		setup_doors()
 
 
 func _notify_neighbors():
@@ -187,5 +193,3 @@ func _notify_neighbors():
 		var neighbor : Room = neighbors[dir]
 		if neighbor:
 			neighbor.unlock_entrance(OPPOSITE[dir])
-
-signal cleared(room : Room)

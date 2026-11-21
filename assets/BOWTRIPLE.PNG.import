@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ssgkrym4018p"
-valid=false
+uid="uid://bqeo7opm6reby"
+path="res://.godot/imported/BOWTRIPLE.png-0cc53a95a64208d563286b5aa9e02a6b.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://assets/BOWTRIPLE.PNG"
+source_file="res://assets/BOWTRIPLE.png"
+dest_files=["res://.godot/imported/BOWTRIPLE.png-0cc53a95a64208d563286b5aa9e02a6b.ctex"]
 
 [params]
 

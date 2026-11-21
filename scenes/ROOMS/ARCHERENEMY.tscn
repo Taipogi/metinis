@@ -184,7 +184,7 @@ shape = SubResource("RectangleShape2D_wg30l")
 
 [node name="Health" type="Node" parent="." unique_id=2142138480]
 script = ExtResource("1_rsrgk")
-max_health = 50
+max_health = 120
 
 [node name="HealthBar" type="ProgressBar" parent="." unique_id=1599414298]
 visible = false

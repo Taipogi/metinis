@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://hipapik6jey1"]
+
+[ext_resource type="PackedScene" uid="uid://cx3rc538xpoti" path="res://scenes/ROOMS/CARDINALENEMY.tscn" id="1_fcdj4"]
+[ext_resource type="PackedScene" uid="uid://jx1psfdvqjud" path="res://scenes/ROOMS/TWOroomtemplate.tscn" id="1_scjjk"]
+[ext_resource type="PackedScene" uid="uid://di50tb2paweq5" path="res://scenes/ROOMS/DIAGONALENEMY.tscn" id="2_2suu1"]
+[ext_resource type="PackedScene" uid="uid://dyrdgwsp2ypyq" path="res://scenes/ROOMS/KINGBOSS.tscn" id="3_jh6et"]
+
+[node name="ROOM_TEMPLATE" unique_id=893755609 instance=ExtResource("1_scjjk")]
+enemy_scenes = Array[PackedScene]([ExtResource("2_2suu1"), ExtResource("1_fcdj4")])
+boss_scene = ExtResource("3_jh6et")

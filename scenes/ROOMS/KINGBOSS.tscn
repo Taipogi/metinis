@@ -1,0 +1,460 @@
+[gd_scene format=3 uid="uid://dyrdgwsp2ypyq"]
+
+[ext_resource type="Script" uid="uid://bcymfsv807y84" path="res://scripts/health.gd" id="1_fcsgo"]
+[ext_resource type="Texture2D" uid="uid://c6qjwww6dssss" path="res://assets/KINGBOSS.PNG" id="2_fcsgo"]
+
+[sub_resource type="GDScript" id="GDScript_otpf1"]
+resource_name = "King_enemy"
+script/source = "extends CharacterBody2D
+enum State { CHASE, SHOOT_WINDUP, LUNGE_WINDUP, LUNGING, RECOVER }
+@export var projectile_scene: PackedScene = preload(\"res://scenes/ROOMS/KINGATTACK.tscn\")
+@export var spear_scene: PackedScene = preload(\"res://scenes/ROOMS/KingLunge.tscn\")
+@export var speed := 45
+@export var preferred_range := 120.0
+@export var range_tolerance := 30.0
+@export var shoot_range := 240.0
+@export var shot_count := 3
+@export var shot_spread_deg := 18.0
+@export var shoot_windup := 0.4
+@export var lunge_trigger_range := 110.0
+@export var lunge_chance := 0.5
+@export var lunge_windup := 0.5
+@export var lunge_speed := 200.0    
+@export var lunge_time := 0.2
+@export var lunge_recover := 0.7
+@export var attack_cooldown := 1.5
+@export var probe_distance := 28.0
+@export var push_radius := 22.0
+@export var push_strength := 35.0
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var detection_area: Area2D = $DetectionArea
+@onready var health: Health = $Health
+var state := State.CHASE
+var player: Node2D = null
+var can_attack := true
+var strafe_dir := 1.0
+var lunge_dir := Vector2.ZERO
+var lunge_left := 0.0
+func _ready():
+	add_to_group(\"enemy\")
+	detection_area.body_entered.connect(_on_detection_area_body_entered)
+	detection_area.body_exited.connect(_on_detection_area_body_exited)
+	health.died.connect(_on_died)
+	strafe_dir = 1.0 if randf() < 0.5 else -1.0
+func _physics_process(delta):
+	if player == null:
+		velocity = Vector2.ZERO
+		move_and_slide()
+		return
+	var to_player = player.global_position - global_position
+	var dist = to_player.length()
+	match state:
+		State.CHASE:
+			_chase(to_player, dist)
+		State.LUNGING:
+			_lunge_step(delta)
+		_:
+			velocity = get_soft_push()   
+			move_and_slide()
+func _chase(to_player: Vector2, dist: float):
+	var move := Vector2.ZERO
+	if dist > preferred_range + range_tolerance:
+		move = to_player.normalized()
+	move = steer(move)
+	velocity = move * speed + get_soft_push()
+	velocity = velocity.limit_length(speed * 1.5)
+	move_and_slide()
+	play_walk_anim(to_player)
+	if can_attack:
+		_pick_attack(dist)
+func _pick_attack(dist: float):
+	if dist <= lunge_trigger_range and randf() < lunge_chance:
+		lunge()
+	elif dist <= shoot_range:
+		shoot()
+func shoot():
+	can_attack = false
+	state = State.SHOOT_WINDUP
+	sprite.modulate = Color(1.5, 1.5, 2.0)        
+	await get_tree().create_timer(shoot_windup).timeout
+	if not is_inside_tree():
+		return
+	sprite.modulate = Color.WHITE
+	if player != null:
+		var base = (player.global_position - global_position).normalized()
+		for i in shot_count:
+			var angle := 0.0
+			if shot_count > 1:
+				angle = lerpf(-shot_spread_deg, shot_spread_deg, float(i) / (shot_count - 1))
+			var proj = projectile_scene.instantiate()
+			proj.source = self
+			proj.direction = base.rotated(deg_to_rad(angle))
+			get_parent().add_child(proj)
+			proj.global_position = global_position + proj.direction * 18
+	state = State.RECOVER
+	await get_tree().create_timer(0.3).timeout
+	if not is_inside_tree():
+		return
+	state = State.CHASE
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+func lunge():
+	can_attack = false
+	state = State.LUNGE_WINDUP
+	sprite.modulate = Color(2.0, 0.8, 0.8)       
+	await get_tree().create_timer(lunge_windup).timeout
+	if not is_inside_tree():
+		return
+	sprite.modulate = Color.WHITE
+	if player != null:
+		lunge_dir = (player.global_position - global_position).normalized()
+		var spear = spear_scene.instantiate()
+		spear.source = self
+		spear.direction = lunge_dir
+		add_child(spear)                         
+		lunge_left = lunge_time
+		state = State.LUNGING
+	else:
+		_end_lunge()
+func _lunge_step(delta: float):
+	lunge_left -= delta
+	velocity = lunge_dir * lunge_speed
+	move_and_slide()
+	if lunge_left <= 0.0 or is_on_wall():
+		_end_lunge()
+func _end_lunge():
+	state = State.RECOVER                        
+	await get_tree().create_timer(lunge_recover).timeout
+	if not is_inside_tree():
+		return
+	state = State.CHASE
+	await get_tree().create_timer(attack_cooldown).timeout
+	can_attack = true
+func is_blocked(dir: Vector2) -> bool:
+	return test_move(global_transform, dir * probe_distance)
+func steer(desired: Vector2) -> Vector2:
+	if desired == Vector2.ZERO:
+		return Vector2.ZERO
+	if not is_blocked(desired):
+		return desired
+	for angle in [30, 60, 90, 120]:
+		var a := deg_to_rad(angle) * strafe_dir
+		var alt = desired.rotated(a)
+		if not is_blocked(alt):
+			return alt
+		alt = desired.rotated(-a)
+		if not is_blocked(alt):
+			return alt
+	return Vector2.ZERO
+func get_soft_push() -> Vector2:
+	var push := Vector2.ZERO
+	var others := get_tree().get_nodes_in_group(\"enemy\")
+	if player != null:
+		others.append(player)
+	for other in others:
+		if other == self or not (other is Node2D):
+			continue
+		var offset : Vector2 = global_position - other.global_position
+		var d := offset.length()
+		if d >= push_radius:
+			continue
+		if d < 0.01:
+			offset = Vector2.from_angle(randf() * TAU)
+			d = 0.01
+		push += offset.normalized() * (1.0 - d / push_radius)
+	return push * push_strength
+func play_walk_anim(direction: Vector2):
+	if abs(direction.x) > abs(direction.y):
+		sprite.play(\"WALK_RIGHT\" if direction.x > 0 else \"WALK_LEFT\")
+	else:
+		sprite.play(\"WALK_DOWN\" if direction.y > 0 else \"WALK_UP\")
+func take_damage(amount):
+	health.take_damage(amount)
+func _on_detection_area_body_entered(body):
+	if body.is_in_group(\"player\"):
+		player = body
+		add_collision_exception_with(body)
+		body.add_collision_exception_with(self)
+func _on_detection_area_body_exited(body):
+	if body == player:
+		player = null
+func _on_died():
+	queue_free()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1mav5"]
+size = Vector2(17, 27)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wac6j"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_otpf1"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pbnvx"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2who"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11urd"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2buc1"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(18, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sw4t1"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(36, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_nb5tj"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(54, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4gje5"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(72, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_sthnh"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(90, 0, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqo78"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vs65m"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(18, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4wkxl"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(36, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hqqpp"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(54, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_874r7"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(72, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3tg0f"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(90, 96, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2yxm5"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c33su"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(18, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_17eej"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(36, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tvfw1"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(54, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0857o"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(72, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emkqb"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(90, 32, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4ptko"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(0, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qv86t"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(18, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_64d7k"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(36, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ufnsi"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(54, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_srbo7"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(72, 64, 18, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q6alr"]
+atlas = ExtResource("2_fcsgo")
+region = Rect2(90, 64, 18, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jfon8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wac6j")
+}],
+"loop": 1,
+"name": &"IDLE_DOWN",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_otpf1")
+}],
+"loop": 1,
+"name": &"IDLE_LEFT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pbnvx")
+}],
+"loop": 1,
+"name": &"IDLE_RIGHT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2who")
+}],
+"loop": 1,
+"name": &"IDLE_UP",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11urd")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2buc1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sw4t1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_nb5tj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4gje5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_sthnh")
+}],
+"loop": 1,
+"name": &"WALK_DOWN",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqo78")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vs65m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4wkxl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hqqpp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_874r7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3tg0f")
+}],
+"loop": 1,
+"name": &"WALK_LEFT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2yxm5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c33su")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_17eej")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tvfw1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0857o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emkqb")
+}],
+"loop": 1,
+"name": &"WALK_RIGHT",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4ptko")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qv86t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_64d7k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ufnsi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_srbo7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q6alr")
+}],
+"loop": 1,
+"name": &"WALK_UP",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_a8y6v"]
+radius = 140.00357
+
+[node name="MageEnemy" type="CharacterBody2D" unique_id=792677029]
+script = SubResource("GDScript_otpf1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=806960385]
+position = Vector2(0.5, 2.5)
+shape = SubResource("RectangleShape2D_1mav5")
+
+[node name="Health" type="Node" parent="." unique_id=365650829]
+script = ExtResource("1_fcsgo")
+max_health = 180
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=1778351856]
+visible = false
+offset_left = -14.0
+offset_top = -24.0
+offset_right = 14.0
+offset_bottom = -13.0
+theme_override_font_sizes/font_size = 4
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=648338604]
+sprite_frames = SubResource("SpriteFrames_jfon8")
+animation = &"WALK_DOWN"
+
+[node name="DetectionArea" type="Area2D" parent="." unique_id=52737285]
+position = Vector2(0, 1)
+rotation = 2.5983953
+scale = Vector2(1.8017906, 1.8909514)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionArea" unique_id=448512820]
+position = Vector2(0, 2)
+shape = SubResource("CircleShape2D_a8y6v")

@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var damage := 10
+@export var damage := 20
 @export var lifetime := 0.2
 var source: Node = null
 

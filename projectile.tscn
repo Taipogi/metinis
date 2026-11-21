@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://byvsokfq0ox4s"]
+
+[ext_resource type="Texture2D" uid="uid://dcqcg4w81l53j" path="res://assets/mageattack.png" id="1_a85iw"]
+
+[sub_resource type="GDScript" id="GDScript_wg30l"]
+resource_name = "projectile"
+script/source = "extends Area2D
+
+@export var damage := 10
+@export var speed := 150.0
+@export var lifetime := 3.0
+
+var direction := Vector2.RIGHT
+var source: Node = null
+
+
+func _ready():
+	body_entered.connect(_on_body_entered)
+	rotation = direction.angle()
+	await get_tree().create_timer(lifetime).timeout
+	queue_free()
+
+
+func _physics_process(delta):
+	global_position += direction * speed * delta
+
+
+func _on_body_entered(body):
+	if body == source:
+		return
+	if is_instance_valid(source) and source.is_in_group(\"enemy\") and body.is_in_group(\"enemy\"):
+		return
+
+	if body.has_method(\"take_damage\"):
+		body.take_damage(damage)
+		if is_instance_valid(source) and source.has_method(\"on_hit_dealt\"):
+			source.on_hit_dealt(body, damage)
+		if body.has_method(\"on_hurt_by\"):
+			body.on_hurt_by(source)
+
+	queue_free()
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_54q3l"]
+radius = 1.8421054
+height = 6.0
+
+[node name="Projectile" type="Area2D" unique_id=1927189194]
+script = SubResource("GDScript_wg30l")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=198549342]
+texture = ExtResource("1_a85iw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1471414252]
+scale = Vector2(3.8000002, 1.199999)
+shape = SubResource("CapsuleShape2D_54q3l")

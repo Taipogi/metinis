@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dggx8bme5gefg"
-valid=false
+uid="uid://cpf1lxss3sh0w"
+path="res://.godot/imported/BOW.png-07ae542ade5017b3377dfb9d721bdb06.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://assets/BOW.PNG"
+source_file="res://assets/BOW.png"
+dest_files=["res://.godot/imported/BOW.png-07ae542ade5017b3377dfb9d721bdb06.ctex"]
 
 [params]
 

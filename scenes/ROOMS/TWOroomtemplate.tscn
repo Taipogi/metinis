@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://jx1psfdvqjud"]
+
+[ext_resource type="PackedScene" uid="uid://bjlyc0dfidj7k" path="res://scenes/ROOMS/AONEroom_template.tscn" id="1_dcrq4"]
+[ext_resource type="PackedScene" uid="uid://c6p4peb5i6nng" path="res://scenes/ROOMS/GoblinEnemy.tscn" id="2_s7ow8"]
+[ext_resource type="PackedScene" uid="uid://h1ntx4kj1vcf" path="res://scenes/ROOMS/SpeedyGoblin.tscn" id="3_n1vfm"]
+[ext_resource type="PackedScene" uid="uid://bjvipd1yrwogm" path="res://scenes/ROOMS/ARCHERENEMY.tscn" id="4_nq1dl"]
+
+[node name="ROOM_TEMPLATE" unique_id=893755609 instance=ExtResource("1_dcrq4")]
+enemy_scenes = Array[PackedScene]([ExtResource("2_s7ow8"), ExtResource("3_n1vfm")])
+boss_scene = ExtResource("4_nq1dl")
